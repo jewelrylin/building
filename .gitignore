@@ -1,0 +1,25 @@
+# 系統檔案
+.DS_Store
+Thumbs.db
+
+# 編輯器和 IDE 檔案
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# 日誌檔案
+*.log
+
+# 暫存檔案
+.tmp/
+tmp/
+temp/
+
+# 其他不需要版控的檔案
+node_modules/
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local 

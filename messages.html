@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>留言板 - 大樓管理系統</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    <meta name="description" content="大樓管理系統留言板，提供住戶交流互動的平台">
+    
+    <!-- PWA 支援 -->
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#795548">
+    <link rel="apple-touch-icon" href="./img/icon-192.png">
+    
+    <!-- SEO Meta Tags -->
+    <meta property="og:title" content="留言板 - 大樓管理系統">
+    <meta property="og:description" content="大樓管理系統留言板，提供住戶交流互動的平台">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://your-username.github.io/building-management/messages.html">
+    <meta property="og:image" content="https://your-username.github.io/building-management/img/og-image.jpg">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="./img/favicon.png">
+</head>
+<body>
+    <header>
+        <h1>大樓管理系統 - 留言板</h1>
+        <p class="subtitle">分享您的想法與建議</p>
+        <nav>
+            <a href="./index.html">返回首頁</a>
+        </nav>
+    </header>
+    
+    <main>
+        <div class="container">
+            <h2>留言板</h2>
+            
+            <div class="page-intro">
+                <p>在這裡，您可以與社區中的其他住戶交流討論，分享您的想法、問題或建議。我們相信，良好的溝通是建立和諧社區的基石。</p>
+            </div>
+            
+            <div class="message-form">
+                <h3>發布新留言</h3>
+                <div class="form-icon">
+                    <svg viewBox="0 0 24 24" width="24" height="24"><path fill="#a1887f" d="M20,2H4A2,2 0 0,0 2,4V22L6,18H20A2,2 0 0,0 22,16V4A2,2 0 0,0 20,2M6,14V11H18V14H6M6,9V6H18V9H6Z"></path></svg>
+                </div>
+                <textarea id="messageContent" placeholder="在這裡輸入您的留言..."></textarea>
+                <div class="form-group">
+                    <input type="text" id="messageAuthor" placeholder="您的姓名或單位號碼">
+                    <button id="submitMessage">發布留言</button>
+                </div>
+            </div>
+            
+            <div class="messages">
+                <div class="message">
+                    <div class="message-header">
+                        <span class="author">1001室</span>
+                        <span class="date">2024/03/10</span>
+                    </div>
+                    <p class="message-content">有人知道附近有推薦的清潔公司嗎？</p>
+                    <button class="reply-button">回覆</button>
+                    
+                    <div class="replies">
+                        <div class="message reply">
+                            <div class="message-header">
+                                <span class="author">1503室</span>
+                                <span class="date">2024/03/10</span>
+                            </div>
+                            <p class="message-content">我上次用過XX清潔公司，服務不錯，價格合理</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="message">
+                    <div class="message-header">
+                        <span class="author">管理員</span>
+                        <span class="date">2024/03/08</span>
+                    </div>
+                    <p class="message-content">提醒大家記得繳交本月的管理費</p>
+                    <button class="reply-button">回覆</button>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <p>&copy; 2024 大樓管理系統</p>
+        <div class="footer-decoration">
+            <svg viewBox="0 0 100 20" width="100" height="20" preserveAspectRatio="none">
+                <path d="M0,10 Q25,0 50,10 T100,10" fill="none" stroke="#a1887f" stroke-width="1" />
+            </svg>
+        </div>
+    </footer>
+
+    <script src="./js/script.js"></script>
+    <script>
+        // 註冊 Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./service-worker.js')
+                    .then(registration => {
+                        console.log('ServiceWorker 註冊成功: ', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('ServiceWorker 註冊失敗: ', error);
+                    });
+            });
+        }
+    </script>
+</body>
+</html> 

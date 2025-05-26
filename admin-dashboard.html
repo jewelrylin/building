@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理員儀表板 - 大樓管理系統</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .admin-container {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .admin-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .admin-tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            border-bottom: none;
+            margin-right: 5px;
+            border-radius: 4px 4px 0 0;
+        }
+        
+        .admin-tab.active {
+            background-color: #fff;
+            border-color: #ddd;
+            border-bottom-color: #fff;
+            margin-bottom: -1px;
+            font-weight: bold;
+            color: #1a73e8;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .edit-button, .delete-button {
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+        
+        .edit-button {
+            background-color: #4caf50;
+        }
+        
+        .delete-button {
+            background-color: #f44336;
+        }
+        
+        .add-form {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        
+        .important-checkbox {
+            margin: 10px 0;
+        }
+        
+        .logout-button {
+            background-color: #757575;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>大樓管理系統 - 管理員儀表板</h1>
+        <nav>
+            <a href="index.html">返回首頁</a>
+            <button id="logoutButton" class="logout-button">登出</button>
+        </nav>
+    </header>
+    
+    <main>
+        <div class="container">
+            <div class="admin-container">
+                <div class="admin-header">
+                    <h2>管理員控制台</h2>
+                </div>
+                
+                <div class="admin-tabs">
+                    <div class="admin-tab active" data-tab="announcements">公告管理</div>
+                    <div class="admin-tab" data-tab="messages">留言管理</div>
+                </div>
+                
+                <!-- 公告管理 -->
+                <div id="announcements-tab" class="tab-content active">
+                    <div class="add-form">
+                        <h3>新增公告</h3>
+                        <div class="form-group">
+                            <label for="announcementTitle">標題</label>
+                            <input type="text" id="announcementTitle" placeholder="公告標題">
+                        </div>
+                        <div class="form-group">
+                            <label for="announcementContent">內容</label>
+                            <textarea id="announcementContent" placeholder="公告內容"></textarea>
+                        </div>
+                        <div class="important-checkbox">
+                            <input type="checkbox" id="announcementImportant">
+                            <label for="announcementImportant">標記為重要公告</label>
+                        </div>
+                        <button id="addAnnouncement">新增公告</button>
+                    </div>
+                    
+                    <h3>現有公告</h3>
+                    <div id="announcementsList">
+                        <!-- 公告列表將由 JavaScript 動態生成 -->
+                    </div>
+                </div>
+                
+                <!-- 留言管理 -->
+                <div id="messages-tab" class="tab-content">
+                    <h3>留言管理</h3>
+                    <div id="messagesList">
+                        <!-- 留言列表將由 JavaScript 動態生成 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <p>&copy; 2024 大樓管理系統</p>
+    </footer>
+
+    <script src="js/admin.js"></script>
+</body>
+</html> 

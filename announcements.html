@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>公告欄 - 大樓管理系統</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    <meta name="description" content="大樓管理系統公告欄，查看最新社區公告與重要通知">
+    
+    <!-- PWA 支援 -->
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#795548">
+    <link rel="apple-touch-icon" href="./img/icon-192.png">
+    
+    <!-- SEO Meta Tags -->
+    <meta property="og:title" content="公告欄 - 大樓管理系統">
+    <meta property="og:description" content="大樓管理系統公告欄，查看最新社區公告與重要通知">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://your-username.github.io/building-management/announcements.html">
+    <meta property="og:image" content="https://your-username.github.io/building-management/img/og-image.jpg">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="./img/favicon.png">
+</head>
+<body>
+    <header>
+        <h1>大樓管理系統 - 公告欄</h1>
+        <p class="subtitle">了解大樓最新消息與公告</p>
+        <nav>
+            <a href="./index.html">返回首頁</a>
+        </nav>
+    </header>
+    
+    <main>
+        <div class="container">
+            <h2>公告欄</h2>
+            
+            <div class="page-intro">
+                <p>這裡會發布所有與大樓相關的重要訊息，請定期查看以獲取最新資訊。</p>
+            </div>
+            
+            <div class="announcement-header-section">
+                <div class="announcement-icon">
+                    <svg viewBox="0 0 24 24" width="30" height="30"><path fill="#8d6e63" d="M12,8H4A2,2 0 0,0 2,10V14A2,2 0 0,0 4,16H5V20A1,1 0 0,0 6,21H8A1,1 0 0,0 9,20V16H12L17,20V4L12,8M21.5,12C21.5,13.71 20.54,15.26 19,16V8C20.53,8.75 21.5,10.3 21.5,12Z"></path></svg>
+                </div>
+                <h3 class="section-subtitle">最新公告</h3>
+            </div>
+            
+            <div class="announcements">
+                <!-- 公告將通過JavaScript動態載入 -->
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <p>&copy; 2024 大樓管理系統</p>
+        <div class="footer-decoration">
+            <svg viewBox="0 0 100 20" width="100" height="20" preserveAspectRatio="none">
+                <path d="M0,10 Q25,0 50,10 T100,10" fill="none" stroke="#a1887f" stroke-width="1" />
+            </svg>
+        </div>
+    </footer>
+
+    <script src="./js/script.js"></script>
+    <script>
+        // 註冊 Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./service-worker.js')
+                    .then(registration => {
+                        console.log('ServiceWorker 註冊成功: ', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('ServiceWorker 註冊失敗: ', error);
+                    });
+            });
+        }
+    </script>
+</body>
+</html> 
