@@ -692,6 +692,39 @@ footer {
     z-index: 100;
 }
 
+/* 登入區域 */
+.login-area {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 100;
+}
+
+.login-button {
+    display: flex;
+    align-items: center;
+    background-color: #8d6e63;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.login-button svg {
+    margin-right: 6px;
+}
+
+.login-button:hover {
+    background-color: #6d4c41;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: white;
+}
+
 .user-info {
     display: flex;
     align-items: center;

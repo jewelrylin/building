@@ -69,8 +69,22 @@ function checkAndDisplayUserInfo() {
     
     const currentUser = sessionUser || localUser;
     
+    // 獲取登入區域元素
+    const loginArea = document.getElementById('loginArea');
+    
     if (currentUser && currentUser.isLoggedIn) {
+        // 顯示用戶資訊
         createUserInfoArea(currentUser);
+        
+        // 隱藏登入按鈕
+        if (loginArea) {
+            loginArea.style.display = 'none';
+        }
+    } else {
+        // 顯示登入按鈕
+        if (loginArea) {
+            loginArea.style.display = 'block';
+        }
     }
 }
 
@@ -125,6 +139,18 @@ function handleLogout() {
     // 清除登入狀態
     sessionStorage.removeItem('currentUser');
     localStorage.removeItem('currentUser');
+    
+    // 移除用戶資訊區域
+    const userInfoArea = document.querySelector('.user-info-area');
+    if (userInfoArea) {
+        userInfoArea.remove();
+    }
+    
+    // 顯示登入按鈕
+    const loginArea = document.getElementById('loginArea');
+    if (loginArea) {
+        loginArea.style.display = 'block';
+    }
     
     // 顯示通知
     showNotification('已成功登出', 'success');
