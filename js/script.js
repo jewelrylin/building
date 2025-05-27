@@ -433,18 +433,19 @@ function initializeData() {
     }
     
     // 初始化留言數據
-    if (!localStorage.getItem('messages')) {
+    let messages = JSON.parse(localStorage.getItem('messages'));
+    if (!messages) {
         const defaultMessages = [
             {
                 id: '1',
                 content: '有人知道附近有推薦的清潔公司嗎？',
-                author: '1001室',
+                author: '12-34-5',
                 date: '2024/03/10',
                 replies: [
                     {
                         id: '1-1',
                         content: '我上次用過XX清潔公司，服務不錯，價格合理',
-                        author: '1503室',
+                        author: '67-89-0',
                         date: '2024/03/10'
                     }
                 ]
@@ -503,7 +504,7 @@ function displayMessages() {
     messagesContainer.innerHTML = '';
     
     // 從 localStorage 獲取留言
-    const messages = JSON.parse(localStorage.getItem('messages'));
+    const messages = JSON.parse(localStorage.getItem('messages')) || [];
     
     // 顯示每個留言
     messages.forEach(message => {
@@ -596,7 +597,7 @@ function addNewMessage(content, author) {
     }
     
     // 從 localStorage 獲取現有留言
-    const messages = JSON.parse(localStorage.getItem('messages'));
+    let messages = JSON.parse(localStorage.getItem('messages')) || [];
     
     // 創建新留言
     const newMessage = {
@@ -651,7 +652,7 @@ function addMessageListeners() {
 
 // 編輯留言
 function editMessage(messageId) {
-    const messages = JSON.parse(localStorage.getItem('messages'));
+    const messages = JSON.parse(localStorage.getItem('messages')) || [];
     const message = messages.find(m => m.id === messageId);
     
     if (!message) {
@@ -722,7 +723,7 @@ function deleteMessage(messageId) {
         return;
     }
     
-    const messages = JSON.parse(localStorage.getItem('messages'));
+    const messages = JSON.parse(localStorage.getItem('messages')) || [];
     const messageIndex = messages.findIndex(m => m.id === messageId);
     
     if (messageIndex === -1) {
@@ -812,7 +813,7 @@ function createRepliesContainer(messageElement) {
 // 添加回覆到留言
 function addReplyToMessage(messageId, content, author) {
     // 從 localStorage 獲取留言
-    const messages = JSON.parse(localStorage.getItem('messages'));
+    const messages = JSON.parse(localStorage.getItem('messages')) || [];
     
     // 找到對應的留言
     const message = messages.find(m => m.id === messageId);
@@ -839,6 +840,8 @@ function addReplyToMessage(messageId, content, author) {
         
         // 重新顯示留言
         displayMessages();
+        
+        showNotification('回覆已發布', 'success');
     }
 }
 
