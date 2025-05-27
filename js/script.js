@@ -1,5 +1,19 @@
-// 等待 DOM 完全加載
+/**
+ * 全局腳本文件
+ */
+
 document.addEventListener('DOMContentLoaded', function() {
+    // 初始化
+    initApp();
+});
+
+/**
+ * 初始化應用
+ */
+function initApp() {
+    // 檢查用戶登入狀態
+    checkAndDisplayUserInfo();
+    
     // 初始化數據 (如果尚未初始化)
     initializeData();
     
@@ -43,7 +57,124 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 添加管理員入口連結
     addAdminLink();
-});
+}
+
+/**
+ * 檢查並顯示用戶登入資訊
+ */
+function checkAndDisplayUserInfo() {
+    // 檢查是否有登入中的用戶
+    const sessionUser = JSON.parse(sessionStorage.getItem('currentUser'));
+    const localUser = JSON.parse(localStorage.getItem('currentUser'));
+    
+    const currentUser = sessionUser || localUser;
+    
+    if (currentUser && currentUser.isLoggedIn) {
+        createUserInfoArea(currentUser);
+    }
+}
+
+/**
+ * 創建用戶資訊區域
+ * @param {Object} user - 用戶資料
+ */
+function createUserInfoArea(user) {
+    // 檢查是否已存在用戶資訊區域
+    if (document.querySelector('.user-info-area')) {
+        return;
+    }
+    
+    // 創建用戶資訊區域
+    const userInfoArea = document.createElement('div');
+    userInfoArea.className = 'user-info-area';
+    
+    // 用戶資訊
+    const userInfo = document.createElement('div');
+    userInfo.className = 'user-info';
+    
+    // 用戶頭像
+    const userAvatar = document.createElement('div');
+    userAvatar.className = 'user-avatar';
+    userAvatar.textContent = user.fullName.charAt(0).toUpperCase();
+    
+    // 用戶名稱
+    const userName = document.createElement('div');
+    userName.className = 'user-name';
+    userName.textContent = user.fullName;
+    
+    // 登出按鈕
+    const logoutButton = document.createElement('button');
+    logoutButton.className = 'logout-button';
+    logoutButton.textContent = '登出';
+    logoutButton.addEventListener('click', handleLogout);
+    
+    // 組合元素
+    userInfo.appendChild(userAvatar);
+    userInfo.appendChild(userName);
+    userInfoArea.appendChild(userInfo);
+    userInfoArea.appendChild(logoutButton);
+    
+    // 添加到頁面
+    document.body.appendChild(userInfoArea);
+}
+
+/**
+ * 處理登出
+ */
+function handleLogout() {
+    // 清除登入狀態
+    sessionStorage.removeItem('currentUser');
+    localStorage.removeItem('currentUser');
+    
+    // 顯示通知
+    showNotification('已成功登出', 'success');
+    
+    // 重新載入頁面或跳轉
+    setTimeout(() => {
+        window.location.href = './index.html';
+    }, 1000);
+}
+
+/**
+ * 顯示通知
+ * @param {string} message - 通知訊息
+ * @param {string} type - 通知類型 (success, error, info)
+ */
+function showNotification(message, type = 'info') {
+    let container = document.getElementById('notificationContainer');
+    
+    // 如果容器不存在，創建一個
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'notificationContainer';
+        container.className = 'notification-container';
+        document.body.appendChild(container);
+    }
+    
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.innerHTML = `
+        <div class="notification-icon">
+            ${type === 'success' ? '✓' : type === 'error' ? '✗' : 'ℹ'}
+        </div>
+        <div class="notification-message">${message}</div>
+    `;
+    
+    container.appendChild(notification);
+    
+    // 淡入效果
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 10);
+    
+    // 幾秒後淡出
+    setTimeout(() => {
+        notification.classList.add('hide');
+        setTimeout(() => {
+            container.removeChild(notification);
+        }, 300);
+    }, 3000);
+}
 
 // 應用波西米亞風格特效
 function applyBohemianEffects() {

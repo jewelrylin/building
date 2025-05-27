@@ -654,10 +654,16 @@ footer {
 .back-link {
     display: flex;
     align-items: center;
-    color: #8d6e63;
+    color: #000000;
+    font-weight: bold;
     text-decoration: none;
     margin-top: 1rem;
-    font-size: 0.9rem;
+    font-size: 1rem;
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
 }
 
 .back-link svg {
@@ -665,8 +671,67 @@ footer {
 }
 
 .back-link:hover {
+    color: #000000;
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+    text-decoration: none;
+}
+
+/* 用戶登入資訊區域 */
+.user-info-area {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.user-avatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: #8d6e63;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+    margin-right: 8px;
+}
+
+.user-name {
+    font-weight: bold;
     color: #5d4037;
-    text-decoration: underline;
+    font-size: 0.9rem;
+}
+
+.logout-button {
+    background: none;
+    border: none;
+    color: #8d6e63;
+    font-size: 0.8rem;
+    cursor: pointer;
+    padding: 2px 8px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.logout-button:hover {
+    background-color: #f1e8e4;
+    color: #5d4037;
 }
 
 /* 通知樣式 */

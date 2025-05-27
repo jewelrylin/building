@@ -29,9 +29,10 @@
     <header>
         <h1>大樓管理系統 - 公告欄</h1>
         <p class="subtitle">了解大樓最新消息與公告</p>
-        <nav>
-            <a href="./index.html">返回首頁</a>
-        </nav>
+        <a href="./index.html" class="back-link">
+            <svg viewBox="0 0 24 24" width="24" height="24"><path fill="#000000" d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"></path></svg>
+            返回首頁
+        </a>
     </header>
     
     <main>
@@ -63,6 +64,8 @@
             </svg>
         </div>
     </footer>
+
+    <div id="notificationContainer" class="notification-container"></div>
 
     <script src="./js/script.js"></script>
     <script>
