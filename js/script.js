@@ -95,12 +95,12 @@ function createUserInfoArea(user) {
     // 用戶頭像
     const userAvatar = document.createElement('div');
     userAvatar.className = 'user-avatar';
-    userAvatar.textContent = user.fullName.charAt(0).toUpperCase();
+    userAvatar.textContent = user.account.charAt(0).toUpperCase();
     
     // 用戶名稱
     const userName = document.createElement('div');
     userName.className = 'user-name';
-    userName.textContent = user.fullName;
+    userName.textContent = user.account;
     
     // 登出按鈕
     const logoutButton = document.createElement('button');

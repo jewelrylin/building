@@ -199,7 +199,7 @@ function updateUIForLoggedInUser(user) {
     const userDisplayElements = document.querySelectorAll('.user-display-name');
     if (userDisplayElements.length > 0) {
         userDisplayElements.forEach(el => {
-            el.textContent = user.fullName;
+            el.textContent = user.account;
         });
     }
     
