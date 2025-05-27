@@ -29,30 +29,44 @@ function initApp() {
     // 處理留言板功能
     const submitButton = document.getElementById('submitMessage');
     const messageContent = document.getElementById('messageContent');
-    const messageAuthor = document.getElementById('messageAuthor');
     const messagesContainer = document.querySelector('.messages');
+    const loginRequiredMessage = document.getElementById('loginRequiredMessage');
     
     // 如果在留言板頁面
-    if (submitButton && messageContent && messageAuthor) {
-        // 顯示留言
-        displayMessages();
+    if (submitButton && messageContent) {
+        // 檢查用戶是否已登入
+        const currentUser = JSON.parse(sessionStorage.getItem('currentUser')) || JSON.parse(localStorage.getItem('currentUser'));
         
-        // 發布新留言
-        submitButton.addEventListener('click', function() {
-            const content = messageContent.value.trim();
-            const author = messageAuthor.value.trim();
+        if (currentUser && currentUser.isLoggedIn) {
+            // 已登入用戶可以發布留言
+            submitButton.style.display = 'block';
+            if (loginRequiredMessage) loginRequiredMessage.style.display = 'none';
             
-            if (!content || !author) {
-                alert('請填寫留言內容和您的姓名/單位號碼');
-                return;
-            }
+            // 顯示留言
+            displayMessages();
             
-            addNewMessage(content, author);
+            // 發布新留言
+            submitButton.addEventListener('click', function() {
+                const content = messageContent.value.trim();
+                
+                if (!content) {
+                    showNotification('請填寫留言內容', 'error');
+                    return;
+                }
+                
+                addNewMessage(content, currentUser.account);
+                
+                // 清空輸入欄位
+                messageContent.value = '';
+            });
+        } else {
+            // 未登入用戶無法發布留言
+            submitButton.style.display = 'none';
+            if (loginRequiredMessage) loginRequiredMessage.style.display = 'block';
             
-            // 清空輸入欄位
-            messageContent.value = '';
-            messageAuthor.value = '';
-        });
+            // 仍然顯示留言，但不能發布
+            displayMessages();
+        }
     }
     
     // 添加管理員入口連結
@@ -496,8 +510,8 @@ function displayMessages() {
         displaySingleMessage(message, messagesContainer);
     });
     
-    // 為所有回覆按鈕添加事件監聽器
-    addReplyListeners();
+    // 為所有回覆、編輯和刪除按鈕添加事件監聽器
+    addMessageListeners();
 }
 
 // 顯示單個留言及其回覆
@@ -505,6 +519,12 @@ function displaySingleMessage(message, container) {
     const messageElement = document.createElement('div');
     messageElement.className = 'message';
     messageElement.dataset.id = message.id;
+    
+    // 檢查當前用戶是否是該消息的作者或管理員
+    const currentUser = JSON.parse(sessionStorage.getItem('currentUser')) || JSON.parse(localStorage.getItem('currentUser'));
+    const isAuthor = currentUser && message.author === currentUser.account;
+    const isAdmin = currentUser && currentUser.isAdmin === true;
+    const canEditDelete = isAuthor || isAdmin;
     
     let repliesHTML = '';
     if (message.replies && message.replies.length > 0) {
@@ -523,6 +543,23 @@ function displaySingleMessage(message, container) {
         repliesHTML += '</div>';
     }
     
+    // 添加編輯和刪除按鈕（只對發布者和管理員顯示）
+    let actionsHTML = '';
+    if (canEditDelete) {
+        actionsHTML = `
+            <div class="message-actions">
+                <button class="edit-button" data-id="${message.id}">
+                    <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z"></path></svg>
+                    編輯
+                </button>
+                <button class="delete-button" data-id="${message.id}">
+                    <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"></path></svg>
+                    刪除
+                </button>
+            </div>
+        `;
+    }
+    
     // 添加一些波西米亞風格的隨機圖案作為裝飾
     const decorPattern = Math.floor(Math.random() * 3);
     let decorHTML = '';
@@ -539,6 +576,7 @@ function displaySingleMessage(message, container) {
             <span class="date">${message.date}</span>
         </div>
         <p class="message-content">${message.content}</p>
+        ${actionsHTML}
         <button class="reply-button">回覆</button>
         ${repliesHTML}
         ${decorHTML}
@@ -549,6 +587,14 @@ function displaySingleMessage(message, container) {
 
 // 添加新留言
 function addNewMessage(content, author) {
+    // 檢查用戶是否已登入
+    const currentUser = JSON.parse(sessionStorage.getItem('currentUser')) || JSON.parse(localStorage.getItem('currentUser'));
+    
+    if (!currentUser || !currentUser.isLoggedIn) {
+        showNotification('請先登入後再發布留言', 'error');
+        return;
+    }
+    
     // 從 localStorage 獲取現有留言
     const messages = JSON.parse(localStorage.getItem('messages'));
     
@@ -569,6 +615,129 @@ function addNewMessage(content, author) {
     
     // 重新顯示留言
     displayMessages();
+    
+    showNotification('留言已發布', 'success');
+}
+
+// 添加編輯和刪除功能
+function addMessageListeners() {
+    // 添加回覆按鈕監聽器
+    addReplyListeners();
+    
+    // 添加編輯和刪除按鈕監聽器
+    const editButtons = document.querySelectorAll('.edit-button');
+    const deleteButtons = document.querySelectorAll('.delete-button');
+    
+    editButtons.forEach(button => {
+        if (!button.hasListener) {
+            button.addEventListener('click', function() {
+                const messageId = this.dataset.id;
+                editMessage(messageId);
+            });
+            button.hasListener = true;
+        }
+    });
+    
+    deleteButtons.forEach(button => {
+        if (!button.hasListener) {
+            button.addEventListener('click', function() {
+                const messageId = this.dataset.id;
+                deleteMessage(messageId);
+            });
+            button.hasListener = true;
+        }
+    });
+}
+
+// 編輯留言
+function editMessage(messageId) {
+    const messages = JSON.parse(localStorage.getItem('messages'));
+    const message = messages.find(m => m.id === messageId);
+    
+    if (!message) {
+        showNotification('找不到該留言', 'error');
+        return;
+    }
+    
+    // 創建編輯表單
+    const messageElement = document.querySelector(`.message[data-id="${messageId}"]`);
+    const messageContent = messageElement.querySelector('.message-content');
+    const originalContent = messageContent.textContent;
+    
+    // 如果已經處於編輯狀態，不再創建新的編輯框
+    if (messageElement.querySelector('.edit-form')) {
+        return;
+    }
+    
+    // 隱藏原內容
+    messageContent.style.display = 'none';
+    
+    // 創建編輯表單
+    const editForm = document.createElement('div');
+    editForm.className = 'edit-form';
+    editForm.innerHTML = `
+        <textarea class="edit-textarea">${originalContent}</textarea>
+        <div class="form-group">
+            <button class="save-edit">保存</button>
+            <button class="cancel-edit">取消</button>
+        </div>
+    `;
+    
+    // 插入編輯表單
+    messageContent.insertAdjacentElement('afterend', editForm);
+    
+    // 保存編輯
+    editForm.querySelector('.save-edit').addEventListener('click', function() {
+        const newContent = editForm.querySelector('.edit-textarea').value.trim();
+        
+        if (!newContent) {
+            showNotification('留言內容不能為空', 'error');
+            return;
+        }
+        
+        // 更新留言內容
+        message.content = newContent;
+        localStorage.setItem('messages', JSON.stringify(messages));
+        
+        // 更新顯示
+        messageContent.textContent = newContent;
+        messageContent.style.display = 'block';
+        
+        // 移除編輯表單
+        editForm.remove();
+        
+        showNotification('留言已更新', 'success');
+    });
+    
+    // 取消編輯
+    editForm.querySelector('.cancel-edit').addEventListener('click', function() {
+        messageContent.style.display = 'block';
+        editForm.remove();
+    });
+}
+
+// 刪除留言
+function deleteMessage(messageId) {
+    if (!confirm('確定要刪除這條留言嗎？此操作不可撤銷。')) {
+        return;
+    }
+    
+    const messages = JSON.parse(localStorage.getItem('messages'));
+    const messageIndex = messages.findIndex(m => m.id === messageId);
+    
+    if (messageIndex === -1) {
+        showNotification('找不到該留言', 'error');
+        return;
+    }
+    
+    // 刪除留言
+    messages.splice(messageIndex, 1);
+    localStorage.setItem('messages', JSON.stringify(messages));
+    
+    // 重新顯示留言
+    displayMessages();
+    
+    showNotification('留言已刪除', 'success');
 }
 
 // 添加回覆功能
@@ -579,6 +748,14 @@ function addReplyListeners() {
         // 避免重複添加事件監聽器
         if (!button.hasListener) {
             button.addEventListener('click', function() {
+                // 檢查用戶是否已登入
+                const currentUser = JSON.parse(sessionStorage.getItem('currentUser')) || JSON.parse(localStorage.getItem('currentUser'));
+                
+                if (!currentUser || !currentUser.isLoggedIn) {
+                    showNotification('請先登入後再回覆', 'error');
+                    return;
+                }
+                
                 const message = this.closest('.message');
                 const replies = message.querySelector('.replies') || createRepliesContainer(message);
                 
@@ -593,7 +770,6 @@ function addReplyListeners() {
                 replyForm.innerHTML = `
                     <textarea placeholder="在這裡輸入您的回覆..."></textarea>
                     <div class="form-group">
-                        <input type="text" placeholder="您的姓名或單位號碼">
                         <button class="submit-reply">發布回覆</button>
                     </div>
                 `;
@@ -605,15 +781,14 @@ function addReplyListeners() {
                 const submitReply = replyForm.querySelector('.submit-reply');
                 submitReply.addEventListener('click', function() {
                     const replyContent = replyForm.querySelector('textarea').value.trim();
-                    const replyAuthor = replyForm.querySelector('input').value.trim();
                     
-                    if (!replyContent || !replyAuthor) {
-                        alert('請填寫回覆內容和您的姓名/單位號碼');
+                    if (!replyContent) {
+                        showNotification('請填寫回覆內容', 'error');
                         return;
                     }
                     
-                    // 添加回覆
-                    addReplyToMessage(message.dataset.id, replyContent, replyAuthor);
+                    // 添加回覆，使用當前用戶的帳號作為作者
+                    addReplyToMessage(message.dataset.id, replyContent, currentUser.account);
                     
                     // 移除回覆表單
                     replyForm.remove();
