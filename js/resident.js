@@ -67,7 +67,7 @@ function handleRegister(e) {
     
     // 帳號格式驗證
     if (!validateAccount(account)) {
-        showNotification('帳號格式不正確，請使用 xx-xx-x 格式', 'error');
+        showNotification('帳號格式不正確，請使用 數字-數字-數字 格式（例如：12-34-5）', 'error');
         return;
     }
     
@@ -258,7 +258,7 @@ function showNotification(message, type = 'info') {
  * @returns {boolean} 是否為有效的帳號格式
  */
 function validateAccount(account) {
-    const re = /^[A-Za-z0-9]{2}-[A-Za-z0-9]{2}-[A-Za-z0-9]{1}$/;
+    const re = /^[0-9]{2}-[0-9]{2}-[0-9]{1}$/;
     return re.test(account);
 }
 
