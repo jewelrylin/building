@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>訪客訪問 - 大樓管理系統</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    <meta name="description" content="大樓管理系統訪客訪問登記頁面">
+    
+    <!-- PWA 支援 -->
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#795548">
+    <link rel="apple-touch-icon" href="./img/icon-192.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="./img/favicon.png">
+</head>
+<body>
+    <header>
+        <h1>大樓管理系統</h1>
+        <p class="subtitle">訪客訪問</p>
+        <a href="./index.html" class="back-link">
+            <svg viewBox="0 0 24 24" width="24" height="24"><path fill="#8d6e63" d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"></path></svg>
+            返回首頁
+        </a>
+    </header>
+    
+    <main>
+        <div class="container">
+            <div class="form-card">
+                <h2>訪客訪問登記</h2>
+                <p class="form-description">請填寫以下資料以登記您的訪問</p>
+                
+                <form id="visitorForm" class="styled-form">
+                    <div class="form-group">
+                        <label for="visitorName">訪客姓名</label>
+                        <input type="text" id="visitorName" name="visitorName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="visitorPhone">手機號碼</label>
+                        <input type="tel" id="visitorPhone" name="visitorPhone" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="visitPurpose">訪問目的</label>
+                        <select id="visitPurpose" name="visitPurpose" required>
+                            <option value="" disabled selected>請選擇訪問目的</option>
+                            <option value="family">探訪親友</option>
+                            <option value="delivery">送貨/外送</option>
+                            <option value="maintenance">維修服務</option>
+                            <option value="business">商務拜訪</option>
+                            <option value="other">其他</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group" id="otherPurposeGroup" style="display: none;">
+                        <label for="otherPurpose">其他目的說明</label>
+                        <input type="text" id="otherPurpose" name="otherPurpose">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="targetUnit">訪問單位</label>
+                        <input type="text" id="targetUnit" name="targetUnit" placeholder="例：A棟1201室" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="targetResident">被訪住戶姓名</label>
+                        <input type="text" id="targetResident" name="targetResident" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="visitDate">訪問日期</label>
+                        <input type="date" id="visitDate" name="visitDate" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="visitTime">訪問時間</label>
+                        <input type="time" id="visitTime" name="visitTime" required>
+                    </div>
+                    
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="termsAgree" name="termsAgree" required>
+                        <label for="termsAgree">我同意<a href="#" class="text-link">訪客管理規範</a>與<a href="#" class="text-link">隱私政策</a></label>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">提交訪問申請</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <p>&copy; 2025 大樓管理系統</p>
+        <div class="footer-decoration">
+            <svg viewBox="0 0 100 20" width="100" height="20" preserveAspectRatio="none">
+                <path d="M0,10 Q25,0 50,10 T100,10" fill="none" stroke="#a1887f" stroke-width="1" />
+            </svg>
+        </div>
+    </footer>
+
+    <div id="notificationContainer" class="notification-container"></div>
+    <div id="modalContainer" class="modal-container">
+        <div class="modal" id="qrCodeModal">
+            <div class="modal-header">
+                <h3>訪問二維碼</h3>
+                <button class="close-modal">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="qr-code-container" id="qrCodeDisplay">
+                    <!-- QR Code will be inserted here -->
+                </div>
+                <div class="visitor-info">
+                    <p>訪客姓名: <span id="modalVisitorName"></span></p>
+                    <p>訪問單位: <span id="modalTargetUnit"></span></p>
+                    <p>訪問時間: <span id="modalVisitDateTime"></span></p>
+                    <p>訪問編號: <span id="modalVisitId"></span></p>
+                </div>
+                <p class="instruction-text">請向保安人員出示此二維碼進行訪問登記</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="downloadQRCode">下載二維碼</button>
+                <button class="btn btn-primary" id="closeModal">關閉</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="./js/script.js"></script>
+    <script src="./js/visitor.js"></script>
+</body>
+</html> 

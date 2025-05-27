@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>住戶註冊 - 大樓管理系統</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    <meta name="description" content="大樓管理系統住戶註冊頁面">
+    
+    <!-- PWA 支援 -->
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#795548">
+    <link rel="apple-touch-icon" href="./img/icon-192.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="./img/favicon.png">
+</head>
+<body>
+    <header>
+        <h1>大樓管理系統</h1>
+        <p class="subtitle">住戶註冊</p>
+        <a href="./index.html" class="back-link">
+            <svg viewBox="0 0 24 24" width="24" height="24"><path fill="#8d6e63" d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"></path></svg>
+            返回首頁
+        </a>
+    </header>
+    
+    <main>
+        <div class="container">
+            <div class="form-card">
+                <h2>住戶資料註冊</h2>
+                <p class="form-description">請填寫您的個人資料以完成住戶註冊</p>
+                
+                <form id="residentForm" class="styled-form">
+                    <div class="form-group">
+                        <label for="fullName">姓名</label>
+                        <input type="text" id="fullName" name="fullName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">電子郵件</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">手機號碼</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="unit">住宅單位</label>
+                        <input type="text" id="unit" name="unit" placeholder="例：A棟1201室" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">設定密碼</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirmPassword">確認密碼</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" required>
+                    </div>
+                    
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="termsAgree" name="termsAgree" required>
+                        <label for="termsAgree">我同意<a href="#" class="text-link">服務條款</a>與<a href="#" class="text-link">隱私政策</a></label>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">註冊</button>
+                        <a href="./resident-login.html" class="text-link">已有帳號？登入</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <p>&copy; 2025 大樓管理系統</p>
+        <div class="footer-decoration">
+            <svg viewBox="0 0 100 20" width="100" height="20" preserveAspectRatio="none">
+                <path d="M0,10 Q25,0 50,10 T100,10" fill="none" stroke="#a1887f" stroke-width="1" />
+            </svg>
+        </div>
+    </footer>
+
+    <div id="notificationContainer" class="notification-container"></div>
+
+    <script src="./js/script.js"></script>
+    <script src="./js/resident.js"></script>
+</body>
+</html> 
