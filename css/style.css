@@ -541,6 +541,13 @@ footer {
     font-weight: 500;
 }
 
+.form-hint {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    color: #777;
+}
+
 .form-group input,
 .form-group select,
 .form-group textarea {

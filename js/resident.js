@@ -40,7 +40,7 @@ function handleRegister(e) {
     
     // 獲取表單數據
     const fullName = document.getElementById('fullName').value.trim();
-    const email = document.getElementById('email').value.trim();
+    const account = document.getElementById('account').value.trim();
     const phone = document.getElementById('phone').value.trim();
     const unit = document.getElementById('unit').value.trim();
     const password = document.getElementById('password').value;
@@ -48,7 +48,7 @@ function handleRegister(e) {
     const termsAgree = document.getElementById('termsAgree').checked;
     
     // 基本驗證
-    if (!fullName || !email || !phone || !unit || !password) {
+    if (!fullName || !account || !phone || !unit || !password) {
         showNotification('請填寫所有必填欄位', 'error');
         return;
     }
@@ -65,15 +65,15 @@ function handleRegister(e) {
         return;
     }
     
-    // 郵箱格式驗證
-    if (!validateEmail(email)) {
-        showNotification('請輸入有效的電子郵件地址', 'error');
+    // 帳號格式驗證
+    if (!validateAccount(account)) {
+        showNotification('帳號格式不正確，請使用 xx-xx-x 格式', 'error');
         return;
     }
     
-    // 檢查郵箱是否已註冊
-    if (residents.some(resident => resident.email === email)) {
-        showNotification('此電子郵件已被註冊', 'error');
+    // 檢查帳號是否已註冊
+    if (residents.some(resident => resident.account === account)) {
+        showNotification('此帳號已被註冊', 'error');
         return;
     }
     
@@ -81,7 +81,7 @@ function handleRegister(e) {
     const newResident = {
         id: generateUniqueId(),
         fullName,
-        email,
+        account,
         phone,
         unit,
         password: hashPassword(password), // 實際應用中應使用更安全的加密方法
@@ -111,21 +111,21 @@ function handleRegister(e) {
 function handleLogin(e) {
     e.preventDefault();
     
-    const email = document.getElementById('email').value.trim();
+    const account = document.getElementById('account').value.trim();
     const password = document.getElementById('password').value;
     const rememberMe = document.getElementById('rememberMe').checked;
     
     // 基本驗證
-    if (!email || !password) {
-        showNotification('請輸入電子郵件和密碼', 'error');
+    if (!account || !password) {
+        showNotification('請輸入帳號和密碼', 'error');
         return;
     }
     
     // 查找住戶
-    const resident = residents.find(r => r.email === email);
+    const resident = residents.find(r => r.account === account);
     
     if (!resident || resident.password !== hashPassword(password)) {
-        showNotification('電子郵件或密碼不正確', 'error');
+        showNotification('帳號或密碼不正確', 'error');
         return;
     }
     
@@ -153,7 +153,7 @@ function setLoggedIn(resident, rememberMe = false) {
     const userData = {
         id: resident.id,
         fullName: resident.fullName,
-        email: resident.email,
+        account: resident.account,
         unit: resident.unit,
         isLoggedIn: true,
         loginTime: new Date().toISOString()
@@ -253,13 +253,13 @@ function showNotification(message, type = 'info') {
 }
 
 /**
- * 驗證電子郵件格式
- * @param {string} email - 要驗證的電子郵件
- * @returns {boolean} 是否為有效的電子郵件格式
+ * 驗證帳號格式
+ * @param {string} account - 要驗證的帳號
+ * @returns {boolean} 是否為有效的帳號格式
  */
-function validateEmail(email) {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
+function validateAccount(account) {
+    const re = /^[A-Za-z0-9]{2}-[A-Za-z0-9]{2}-[A-Za-z0-9]{1}$/;
+    return re.test(account);
 }
 
 /**
