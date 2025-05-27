@@ -85,9 +85,21 @@
     </footer>
 
     <script>
-        // 管理員帳號設定
-        const ADMIN_USERNAME = 'admin';
-        const ADMIN_PASSWORD = 'admin123';
+        // 初始化管理員設置
+        function initializeAdminSettings() {
+            if (!localStorage.getItem('adminData')) {
+                const defaultAdminData = {
+                    username: 'admin',
+                    password: 'admin123',
+                    level: 1, // 1: 超級管理員, 2: 二級管理員
+                    isLoggedIn: false
+                };
+                localStorage.setItem('adminData', JSON.stringify(defaultAdminData));
+            }
+        }
+        
+        // 初始化
+        initializeAdminSettings();
         
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -95,16 +107,52 @@
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             
-            if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
-                // 登入成功，設置 localStorage 中的管理員狀態
-                localStorage.setItem('adminLoggedIn', 'true');
-                // 跳轉到管理頁面
+            // 檢查超級管理員登入
+            const adminData = JSON.parse(localStorage.getItem('adminData'));
+            
+            if (username === adminData.username && password === adminData.password) {
+                // 超級管理員登入成功
+                adminData.isLoggedIn = true;
+                localStorage.setItem('adminData', JSON.stringify(adminData));
                 window.location.href = 'admin-dashboard.html';
-            } else {
-                // 顯示錯誤訊息
-                document.getElementById('errorMessage').style.display = 'block';
+                return;
             }
+            
+            // 檢查二級管理員登入
+            const residents = JSON.parse(localStorage.getItem('residents')) || [];
+            const adminResident = residents.find(r => r.isAdmin && r.account === username);
+            
+            if (adminResident) {
+                // 檢查密碼
+                if (adminResident.password === hashPassword(password)) {
+                    // 二級管理員登入成功
+                    const adminData = {
+                        username: adminResident.account,
+                        level: 2, // 二級管理員
+                        isLoggedIn: true,
+                        residentId: adminResident.id
+                    };
+                    localStorage.setItem('adminData', JSON.stringify(adminData));
+                    window.location.href = 'admin-dashboard.html';
+                    return;
+                }
+            }
+            
+            // 登入失敗
+            document.getElementById('errorMessage').style.display = 'block';
         });
+        
+        // 密碼加密（模擬）
+        function hashPassword(password) {
+            // 這只是一個簡單的 hash 函數，實際應用中不應使用
+            let hash = 0;
+            for (let i = 0; i < password.length; i++) {
+                const char = password.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash;
+            }
+            return hash.toString(16);
+        }
     </script>
 </body>
 </html> 

@@ -86,6 +86,33 @@
         .logout-button {
             background-color: #757575;
         }
+        
+        /* 管理員表格樣式 */
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        
+        .admin-table th,
+        .admin-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .admin-table th {
+            background-color: #f5f5f5;
+            font-weight: bold;
+        }
+        
+        .admin-table tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .admin-table button {
+            margin: 2px;
+        }
     </style>
 </head>
 <body>
@@ -107,6 +134,8 @@
                 <div class="admin-tabs">
                     <div class="admin-tab active" data-tab="announcements">公告管理</div>
                     <div class="admin-tab" data-tab="messages">留言管理</div>
+                    <div class="admin-tab" data-tab="users">住戶管理</div>
+                    <div class="admin-tab" data-tab="admins">管理員設置</div>
                 </div>
                 
                 <!-- 公告管理 -->
@@ -139,6 +168,68 @@
                     <h3>留言管理</h3>
                     <div id="messagesList">
                         <!-- 留言列表將由 JavaScript 動態生成 -->
+                    </div>
+                </div>
+                
+                <!-- 住戶管理 -->
+                <div id="users-tab" class="tab-content">
+                    <h3>住戶管理</h3>
+                    <div class="add-form">
+                        <h3>新增/修改住戶</h3>
+                        <div class="form-group">
+                            <label for="userAccount">帳號 (格式: 12-34-5)</label>
+                            <input type="text" id="userAccount" placeholder="請輸入住戶帳號">
+                        </div>
+                        <div class="form-group">
+                            <label for="userName">姓名</label>
+                            <input type="text" id="userName" placeholder="請輸入住戶姓名">
+                        </div>
+                        <div class="form-group">
+                            <label for="userUnit">單位號碼</label>
+                            <input type="text" id="userUnit" placeholder="請輸入單位號碼">
+                        </div>
+                        <div class="form-group">
+                            <label for="userPhone">電話</label>
+                            <input type="text" id="userPhone" placeholder="請輸入電話號碼">
+                        </div>
+                        <div class="form-group">
+                            <label for="userPassword">密碼</label>
+                            <input type="password" id="userPassword" placeholder="請輸入密碼">
+                        </div>
+                        <div class="important-checkbox">
+                            <input type="checkbox" id="userIsAdmin">
+                            <label for="userIsAdmin">設為管理員 (二級權限)</label>
+                        </div>
+                        <input type="hidden" id="editingUserId" value="">
+                        <button id="saveUser">儲存住戶</button>
+                        <button id="cancelEdit" style="display: none;">取消編輯</button>
+                    </div>
+                    
+                    <h3>住戶列表</h3>
+                    <div id="usersList">
+                        <!-- 住戶列表將由 JavaScript 動態生成 -->
+                    </div>
+                </div>
+                
+                <!-- 管理員設置 -->
+                <div id="admins-tab" class="tab-content">
+                    <h3>管理員設置</h3>
+                    <div class="add-form">
+                        <h3>修改超級管理員帳號</h3>
+                        <div class="form-group">
+                            <label for="adminUsername">管理員帳號</label>
+                            <input type="text" id="adminUsername" placeholder="請輸入管理員帳號">
+                        </div>
+                        <div class="form-group">
+                            <label for="adminPassword">管理員密碼</label>
+                            <input type="password" id="adminPassword" placeholder="請輸入管理員密碼">
+                        </div>
+                        <button id="saveAdmin">儲存設置</button>
+                    </div>
+                    
+                    <h3>管理員列表</h3>
+                    <div id="adminsList">
+                        <!-- 管理員列表將由 JavaScript 動態生成 -->
                     </div>
                 </div>
             </div>
